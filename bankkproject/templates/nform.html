@@ -1,0 +1,119 @@
+{% block body %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<form action="nform" method="POST">
+ {% csrf_token %}
+    <label> Name </label>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+        <input type="text" name="name" size="15"/> <br> <br>
+      <label for="birthday">Date Of Birth </label>&nbsp;
+      <input type="date" id="birthday" name="birthday">
+    <br> <br>
+        <label> Age </label>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+        <input type="text" name="age" size="15"/> <br> <br>
+      <input class="form-check-input" type="radio" name="rad" id="flexRadioDefault1">
+      <label class="form-check-label" for="flexRadioDefault1">
+    Male  </label>
+      <input class="form-check-input" type="radio" name="rad" id="flexRadioDefault2" checked>
+      <label class="form-check-label" for="flexRadioDefault2">
+    Female  </label>
+      <input class="form-check-input" type="radio" name="rad" id="flexRadioDefault3" checked>
+      <label class="form-check-label" for="flexRadioDefault2">
+    Other  </label> <br><br>
+        <label> Phone Numb </label>
+        <input type="text" name="pnumb" size="15"/> <br> <br>
+    <label for="exampleInputEmail1">Email ID </label>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+        <input type="email" name="em" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" placeholder="Enter email"><br><br>
+    <label for="exampleFormControlTextarea1">Address</label>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+        <textarea class="form-control" name="address" id="exampleFormControlTextarea1" rows="3"></textarea><br><br>
+
+  <label for="branchDropdown">Select Branch:</label>
+  <select id="branchDropdown">
+    <option value="">Select Branch</option>
+    <option value="branch1">Branch 1</option>
+    <option value="branch2">Branch 2</option>
+    <!-- Add more branches here -->
+  </select>
+
+  <label for="districtDropdown">Select District:</label>
+  <select id="districtDropdown">
+    <option value="">Select District</option>
+    <!-- Group districts for each branch using optgroup -->
+      <option value="district1">District 1</option>
+      <option value="district2">District 2</option>
+      <!-- Add more districts for branch 1 here -->
+      <option value="district3">District 3</option>
+      <option value="district4">District 4</option>
+      <!-- Add more districts for branch 2 here -->
+
+    <!-- Add more branches and corresponding districts here -->
+  </select>
+
+  <script>
+      // Get references to the two dropdowns
+    const districtDropdown = document.getElementById("districtDropdown");
+    const branchDropdown = document.getElementById("branchDropdown");
+
+    // Define the branches for each district as a JSON object passed from Django view
+    const branchesByDistrict = {"district1":[{id:1,name:'abc'}],"district2":[{id:2,name:'xyz'}]};
+
+    // Function to update the branch dropdown options based on the selected district
+    function updateBranchDropdown() {
+        // Clear previous options
+        branchDropdown.innerHTML = '<option value="">-- Select Branch --</option>';
+
+        // Get the selected district ID
+        const selectedDistrictId = districtDropdown.value;
+
+        // If a district is selected, populate the corresponding branches
+        if (selectedDistrictId && branchesByDistrict[selectedDistrictId]) {
+            branchesByDistrict[selectedDistrictId].forEach((branch) => {
+                const option = document.createElement("option");
+                option.value = branch.id;
+                option.textContent = branch.name;
+                branchDropdown.appendChild(option);
+            });
+        }
+    }
+
+    // Event listener to trigger the updateBranchDropdown function when the district dropdown changes
+    districtDropdown.addEventListener("change", updateBranchDropdown);
+  </script>
+    <br><br>
+        <label for="exampleFormControlTextarea1">Account Type</label>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+        <select class="form-control form-control-lg">
+      <option>Savings Account</option>
+         <option>Real Account</option>
+            <option>Personal Account</option>
+            <option>Nominal Account</option>
+    </select><br><br>
+
+    <br> <br>
+    <div class="form-check form-check-inline">
+            <label for="exampleFormControlTextarea1">  Materials provide</label>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+
+      <input class="form-check-input" type="checkbox" id="inlineCheckbox1" value="option1">
+      <label class="form-check-label" for="inlineCheckbox1">Debit Card
+    </label>
+      <input class="form-check-input" type="checkbox" id="inlineCheckbox2" value="option2">
+      <label class="form-check-label" for="inlineCheckbox2">Credit Card</label>
+        <input class="form-check-input" type="checkbox" id="inlineCheckbox3" value="option3">
+      <label class="form-check-label" for="inlineCheckbox2">Cheque Book</label>
+        <input class="form-check-input" type="checkbox" id="inlineCheckbox4" value="option4">
+      <label class="form-check-label" for="inlineCheckbox2">Pass Book</label>
+
+    </div>
+    <input type="submit" name="submit">
+      <button type="submit">Logout</button>
+        <a href="index">Home</a>
+</form>
+{% for msg in messages %}
+{{msg}}
+{% endfor %}
+</body>
+</html>
+{% endblock %}
